@@ -117,10 +117,10 @@ def generate_response(query_text):
 
 # Page title
 st.set_page_config(page_title="Mauricio Tec's Live CV")
-st.title("Mauricio Tec's Live CV")
+# st.title("Mauricio Tec's Live CV")
 
 #  add photo in a circle, center it
-st.image("_static/profile-bw.png", width=200)
+# st.image("_static/profile-bw.png", width=200)
 
 chat = st.chat_input(
     "Ask about my experience, skills and research",
