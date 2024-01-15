@@ -94,7 +94,7 @@ def generate_response(query_text):
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
     qa_chain = RetrievalQA.from_chain_type(
         llm,
-        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=50, k=10),
+        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=200, k=20),
         return_source_documents=True,
         chain_type_kwargs={"prompt": QA_CHAIN_PROMPT},
     )
