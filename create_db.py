@@ -36,8 +36,8 @@ def create_db(cfg: DictConfig):
     embedding = OpenAIEmbeddings()
 
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=120,
-        chunk_overlap=20,
+        chunk_size=200,
+        chunk_overlap=30,
         length_function=len,
     )
 

@@ -61,18 +61,19 @@ QA_CHAIN_PROMPT = PromptTemplate.from_template(template)
 
 context_template = """
 Below is a question that a uswer will ask to a live CV chatbot.
+
 The question includes names of locations, companies/institutions, skills and other entities.
-Your job is to describe the entities of companies, job positions, technologies, and research methods in AI or related fields, that appear in the question.
+Your job is to describe the entities" companies, job positions, technologies, and research methods in AI or related fields, that appear in the question. These definitions should not be about Mauricio/Mauricio Tec. Avoid statements such as "Mauricio Tec is a person mentioned in the question." Do not include more than 5 definitions.
 
 Examples:
 - if the question says "Google", then you should explain what "Google" you can mention that Google is a company that does search engines, and that conducts several research projects in AI.
 - if the company mentions "research scientist", you can explain that a research scientist is a job position that involves conducting research in a company, generally publish research and developing ne methods.
 - if the question mentions "reinforcement learning", you can explain that reinforcement learning is a machine learning method that involves learning from rewards and punishments, and that it is used in robotics, games, self-driving cars, and other areas.
 
-Finally, make a list with skills and technologies that might be related to the companies or areas of machine learning and AI mentioned in the question. Note that none of these definitions should be about Mauricio's work or skills, only about the entities in the question. 
+Finally, make a short list with skills and technologies that might be related to the companies or areas of machine learning and AI mentioned in the question. No need to define them.
 
 
-Context (may, or may not be relevant):
+Context (likely not relevant):
 {context}
 
 Users original question:
@@ -93,7 +94,7 @@ def generate_response(query_text):
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
     qa_chain = RetrievalQA.from_chain_type(
         llm,
-        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=200, k=30),
+        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=50, k=10),
         return_source_documents=True,
         chain_type_kwargs={"prompt": QA_CHAIN_PROMPT},
     )
