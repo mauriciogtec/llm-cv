@@ -48,7 +48,10 @@ def create_db(cfg: DictConfig):
         embedding=embedding,
         persist_directory=persist_directory,
     )
-    db.persist()
+    try:
+        db.persist()
+    except Exception as e:
+        logging.error(f"Error persisting db: {e}")
 
     logging.info(f"Created db with {len(splits)} documents")
 
