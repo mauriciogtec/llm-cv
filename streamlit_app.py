@@ -46,7 +46,7 @@ https://ieeexplore.ieee.org/document/9561286
 You may also answer questions that you can analyze from my Github repository, such as the (good) 
 quality and diversity of my code: https://github.com/mauriciogtec
 
-Below you will be given a context and a question you must answer based on the above and the context (do not make up information).
+Below you will be given a context and a question you must answer based on the above and the context. Do not make information up, answer based on the context, cv and instructions.
 
 
 Context and CV:
