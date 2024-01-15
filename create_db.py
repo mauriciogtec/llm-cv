@@ -3,10 +3,14 @@ import shutil
 import nltk
 from langchain_community.embeddings.openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
-from langchain_community.document_loaders import ArxivLoader, PyPDFLoader, BibtexLoader
-from langchain.text_splitter import NLTKTextSplitter
+from langchain_community.document_loaders import ArxivLoader, PyPDFLoader, WebBaseLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 import hydra
 from omegaconf import DictConfig
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 @hydra.main(config_path="conf", config_name="config")
@@ -21,21 +25,31 @@ def create_db(cfg: DictConfig):
     for v in cfg.pdf.values():
         docs.extend(PyPDFLoader(v).load())
 
+    for v in cfg.web.values():
+        docs.extend(WebBaseLoader(v).load())
+
     persist_directory = "./docs/chroma"
     # delete the directory if it exists
     if os.path.exists(persist_directory):
         shutil.rmtree(persist_directory)
 
     embedding = OpenAIEmbeddings()
-    splitter = NLTKTextSplitter(chunk_overlap=200, chunk_size=500)
+
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=120,
+        chunk_overlap=30,
+        length_function=len,
+    )
 
     splits = splitter.split_documents(docs)
 
-    Chroma.from_documents(
+    db = Chroma.from_documents(
         splits,
         embedding=embedding,
         persist_directory=persist_directory,
     )
+
+    logging.info(f"Created db with {len(splits)} documents")
 
 
 if __name__ == "__main__":

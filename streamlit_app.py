@@ -7,6 +7,8 @@ from langchain_community.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from omegaconf import OmegaConf
+from langchain_community.document_loaders import PyPDFLoader
+
 
 import create_db
 
@@ -15,9 +17,11 @@ if not os.path.exists("docs/chroma"):
     cfg = OmegaConf.load("conf/config.yaml")
     create_db.create_db(cfg)
 
+cv_info = PyPDFLoader("https://mauriciogtec.com/_static/cv.pdf").load()[0].page_content
+
 # Is Mauricio a good fit for a research scientist job at Boston dynamics?
 
-template = """
+template = f"""
 Intructions:
 
 You are a chatbot named 'Mauricio Tec's Live CV' designed to provide specific information about Mauricio's professional and academic background. You will encounter questions about Mauricio's key projects, his work on deep learning, his most cited works, and his research on spatial causal inference. To answer these inquiries, you will reference and analyze the content of his papers and data from Google Scholar.
@@ -41,11 +45,14 @@ quality and diversity of my code: https://github.com/mauriciogtec
 
 Below you will be given a context and a question you must answer based on the above and the context.
 
-Context:
-{context}
+CV:
+{cv_info}
+
+Additional context:
+{{context}}
 
 Answer the following question(s).
-{question}
+{{question}}
 
 If a questions is not about Mauricio (or you), refuse to answer and politely say that "You are an application with exclusive purpose of being a live CV for Mauricio"
 You may describe in more detail previous experiences or skills of Mauricio (from the context) that are relevant to the question.
@@ -53,10 +60,9 @@ You may describe in more detail previous experiences or skills of Mauricio (from
 Helpful Answer:"""
 QA_CHAIN_PROMPT = PromptTemplate.from_template(template)
 
-
 context_template = """
 Below is a question that a uswer will ask to a live CV chatbot.
-The question includes names of locations, companies, skills and other entities.
+The question includes names of locations, companies/institutions, skills and other entities.
 Your job is to describe the entities of companies, job positions, technologies, and research methods in AI or related fields, that appear in the question.
 
 Examples:
@@ -89,13 +95,13 @@ def generate_response(query_text):
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
     qa_chain = RetrievalQA.from_chain_type(
         llm,
-        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=30, k=10),
+        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=100, k=20),
         return_source_documents=True,
         chain_type_kwargs={"prompt": QA_CHAIN_PROMPT},
     )
     context_chain = RetrievalQA.from_chain_type(
         llm,
-        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=10, k=3),
+        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=1, k=1),
         return_source_documents=True,
         chain_type_kwargs={"prompt": CONTEXT_PROMPT},
     )
@@ -131,7 +137,7 @@ chat = st.chat_input(
 st.write(
     """*Example questions*:
 - What is Mauricio's research experience in [AI/statistics/robotics]?
-- Is Mauricio a good fit for a job as [position] at [company]?
+- Is Mauricio a good fit for a job as [position] at [company/institution]?
 - Tell me about Mauricio's research in reinforcement learning.
 - What are Mauricio's coding skills.
 
@@ -145,4 +151,6 @@ if chat:
         result = generate_response(chat)
         st.write(f"{result}")
 
-st.write("Powered by langchain, chatgpt, streamlit, and [mauriciogtec.com](https://mauriciogtec.com)")
+st.write(
+    "Powered by langchain, chatgpt, streamlit, and [mauriciogtec.com](https://mauriciogtec.com)"
+)
