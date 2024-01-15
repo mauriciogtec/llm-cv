@@ -15,7 +15,10 @@ import create_db
 # create db if missing
 if not os.path.exists("docs/chroma"):
     cfg = OmegaConf.load("conf/config.yaml")
-    create_db.create_db(cfg)
+    DB = create_db.create_db(cfg)
+else:
+    DB = Chroma(persist_directory="docs/chroma/", embedding_function=OpenAIEmbeddings())
+
 
 cv_info = PyPDFLoader("https://mauriciogtec.com/_static/cv.pdf").load()[0].page_content
 
@@ -94,13 +97,13 @@ def generate_response(query_text):
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
     qa_chain = RetrievalQA.from_chain_type(
         llm,
-        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=200, k=20),
+        retriever=DB.as_retriever(search_type="mmr", fetch_k=200, k=20),
         return_source_documents=True,
         chain_type_kwargs={"prompt": QA_CHAIN_PROMPT},
     )
     context_chain = RetrievalQA.from_chain_type(
         llm,
-        retriever=vectordb.as_retriever(search_type="similarity", k=1),
+        retriever=DB.as_retriever(search_type="similarity", k=1),
         return_source_documents=True,
         chain_type_kwargs={"prompt": CONTEXT_PROMPT},
     )
@@ -115,7 +118,7 @@ def generate_response(query_text):
 
     Additional context for the question:
     {additional_context}
-"""
+    """
 
     return qa_chain({"query": query_text_with_context})["result"]
 

@@ -52,6 +52,8 @@ def create_db(cfg: DictConfig):
 
     logging.info(f"Created db with {len(splits)} documents")
 
+    return db
+
 
 if __name__ == "__main__":
     create_db()
