@@ -45,10 +45,9 @@ quality and diversity of my code: https://github.com/mauriciogtec
 
 Below you will be given a context and a question you must answer based on the above and the context.
 
-CV:
+Context and CV:
 {cv_info}
 
-Additional context:
 {{context}}
 
 Answer the following question(s).
@@ -74,7 +73,7 @@ Finally, make a list with skills and technologies that might be related to the c
 
 In your bullet list, do not provide information about Mauricio.
 
-Context:
+Context (may, or may not be relevant):
 {context}
 
 Users original question:
@@ -114,8 +113,7 @@ def generate_response(query_text):
     In your answer you might also consider the following auxiliary context. You don't need
     to mention it explicitly, but it might help you answer the question.
 
-    Below is additional for the question. Note that if the context involves some skills or knowledge
-    related to the question and I'd like to know about related skills or knowledge that Mauricio has.:
+    Additional context for the question:
     {additional_context}
 """
 
