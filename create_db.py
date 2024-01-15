@@ -26,9 +26,9 @@ def create_db(cfg: DictConfig):
         docs.extend(WebBaseLoader(v).load())
 
     persist_directory = "./docs/chroma"
-    # delete the directory if it exists
-    if os.path.exists(persist_directory):
-        shutil.rmtree(persist_directory)
+    # # delete the directory if it exists
+    # if os.path.exists(persist_directory):
+    #     shutil.rmtree(persist_directory)
 
     embedding = OpenAIEmbeddings()
 
@@ -45,8 +45,8 @@ def create_db(cfg: DictConfig):
         embedding=embedding,
         persist_directory=persist_directory,
     )
+    db.persist()
     # try:
-    #     db.persist()
     # except Exception as e:
     #     logging.error(f"Error persisting db: {e}")
 
