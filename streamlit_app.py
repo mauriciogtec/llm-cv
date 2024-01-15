@@ -103,7 +103,7 @@ def generate_response(query_text):
     )
     context_chain = RetrievalQA.from_chain_type(
         llm,
-        retriever=DB.as_retriever(search_type="similarity", k=1),
+        retriever=DB.as_retriever(search_type="mmr", k=3),
         return_source_documents=True,
         chain_type_kwargs={"prompt": CONTEXT_PROMPT},
     )
