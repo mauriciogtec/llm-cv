@@ -12,7 +12,7 @@ import create_db
 
 # create db if missing
 if not os.path.exists("docs/chroma"):
-    cfg = OmegaConf.load("config.yaml")
+    cfg = OmegaConf.load("conf/config.yaml")
     create_db.create_db(cfg)
 
 # Is Mauricio a good fit for a research scientist job at Boston dynamics?
