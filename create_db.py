@@ -1,6 +1,5 @@
 import os
 import shutil
-import nltk
 from langchain_community.embeddings.openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_community.document_loaders import ArxivLoader, PyPDFLoader, WebBaseLoader
@@ -15,8 +14,6 @@ logger = logging.getLogger(__name__)
 
 @hydra.main(config_path="conf", config_name="config", version_base=None)
 def create_db(cfg: DictConfig):
-    nltk.download("punkt")
-
     docs = []
 
     for v in cfg.arxiv.values():
