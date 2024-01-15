@@ -37,7 +37,7 @@ def create_db(cfg: DictConfig):
 
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=120,
-        chunk_overlap=30,
+        chunk_overlap=20,
         length_function=len,
     )
 
@@ -48,6 +48,7 @@ def create_db(cfg: DictConfig):
         embedding=embedding,
         persist_directory=persist_directory,
     )
+    db.persist()
 
     logging.info(f"Created db with {len(splits)} documents")
 

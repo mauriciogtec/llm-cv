@@ -69,9 +69,8 @@ Examples:
 - if the company mentions "research scientist", you can explain that a research scientist is a job position that involves conducting research in a company, generally publish research and developing ne methods.
 - if the question mentions "reinforcement learning", you can explain that reinforcement learning is a machine learning method that involves learning from rewards and punishments, and that it is used in robotics, games, self-driving cars, and other areas.
 
-Finally, make a list with skills and technologies that might be related to the companies or areas of machine learning and AI mentioned in the question. 
+Finally, make a list with skills and technologies that might be related to the companies or areas of machine learning and AI mentioned in the question. Note that none of these definitions should be about Mauricio's work or skills, only about the entities in the question. 
 
-In your bullet list, do not provide information about Mauricio.
 
 Context (may, or may not be relevant):
 {context}
@@ -94,13 +93,13 @@ def generate_response(query_text):
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
     qa_chain = RetrievalQA.from_chain_type(
         llm,
-        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=100, k=20),
+        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=200, k=30),
         return_source_documents=True,
         chain_type_kwargs={"prompt": QA_CHAIN_PROMPT},
     )
     context_chain = RetrievalQA.from_chain_type(
         llm,
-        retriever=vectordb.as_retriever(search_type="mmr", fetch_k=1, k=1),
+        retriever=vectordb.as_retriever(search_type="similarity", k=1),
         return_source_documents=True,
         chain_type_kwargs={"prompt": CONTEXT_PROMPT},
     )
