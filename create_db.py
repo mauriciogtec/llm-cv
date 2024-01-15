@@ -3,20 +3,23 @@ import shutil
 import nltk
 from langchain_community.embeddings.openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
-from langchain_community.document_loaders import ArxivLoader, PyPDFLoader
+from langchain_community.document_loaders import ArxivLoader, PyPDFLoader, BibtexLoader
 from langchain.text_splitter import NLTKTextSplitter
+import hydra
+from omegaconf import DictConfig
 
 
-def create_db():
+@hydra.main(config_path="conf", config_name="config")
+def create_db(cfg: DictConfig):
     nltk.download("punkt")
 
-    arxiv_papers = {
-        "AIM": "2105.13345",
-    }
+    docs = []
 
-    papers = ArxivLoader(arxiv_papers["AIM"]).load()
-    cv = PyPDFLoader("https://mauriciogtec.com/_static/cv.pdf").load()
-    docs = papers + cv
+    for v in cfg.arxiv.values():
+        docs.extend(ArxivLoader(v).load())
+
+    for v in cfg.pdf.values():
+        docs.extend(PyPDFLoader(v).load())
 
     persist_directory = "./docs/chroma"
     # delete the directory if it exists

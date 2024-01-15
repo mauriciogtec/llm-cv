@@ -1,2 +1,8 @@
 .vscode/
+**/__pycache__/
+
+# vectordb for retrieval augmentation
 docs/chroma
+
+# hydra logs
+outputs/ 

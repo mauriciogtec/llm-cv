@@ -1,0 +1,17 @@
+arxiv:
+  aim:  "2105.13345"
+  space: "2312.00710"
+  tresnet: "2302.02560"
+  weather2vec: "2209.12316"
+  graph_bnp: "1810.06738"
+  rl_bsd: "2205.04023"
+  rl_heat: "2312.14196"
+  pdbal: "2312.00710"
+
+pdf:
+  robocup: https://www.cs.utexas.edu/~pstone/Papers/bib2html-links/RoboCup2022-nskiran.pdf
+  cv: "https://mauriciogtec.com/_static/cv.pdf"
+  research_statement: "https://mauriciogtec.com/_static/research_statement.pdf"
+  gaze: https://www.cs.utexas.edu/~pstone/Papers/bib2html-links/ICRA21-hart.pdf
+  batchie: https://www.biorxiv.org/content/10.1101/2023.12.18.572245v2.full.pdf
+
