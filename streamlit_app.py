@@ -16,7 +16,7 @@ st.title("Mauricio Tec's Live CV")
 
 
 @st.cache_resource
-def prepare_retrieval_database(cfg: DictConfig):
+def prepare_retrieval_database():
     cfg = OmegaConf.load("conf/config.yaml")
     docs = []
 
