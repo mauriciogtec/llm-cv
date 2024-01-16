@@ -1,53 +1,20 @@
-from omegaconf import DictConfig, OmegaConf
+import os
 import streamlit as st
+import openai
 from langchain_community.chat_models import ChatOpenAI
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
+
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
+from omegaconf import OmegaConf
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.document_loaders import PyPDFLoader, WebBaseLoader, ArxivLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 
-# Page title
-st.set_page_config(page_title="Mauricio Tec's Live CV")
-st.title("Mauricio Tec's Live CV")
+import create_db
 
-
-@st.cache_resource
-def prepare_retrieval_database(cfg: DictConfig):
-    cfg = OmegaConf.load("conf/config.yaml")
-    docs = []
-
-    for v in cfg.arxiv.values():
-        docs.extend(ArxivLoader(v).load())
-
-    for v in cfg.pdf.values():
-        docs.extend(PyPDFLoader(v).load())
-
-    for v in cfg.web.values():
-        docs.extend(WebBaseLoader(v).load())
-
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=200,
-        chunk_overlap=30,
-        length_function=len,
-    )
-
-    splits = splitter.split_documents(docs)
-
-    embeddings = OpenAIEmbeddings()
-    db = Chroma.from_documents(
-        splits,
-        embedding=embeddings,
-    )
-    print("ok")
-    return db
-
-
-DB = prepare_retrieval_database()
-
+cfg = OmegaConf.load("conf/config.yaml")
+DB = create_db.create_db(cfg)
 
 # # create db if missing
 # if not os.path.exists("docs/chroma"):
@@ -55,7 +22,6 @@ DB = prepare_retrieval_database()
 #     DB = Chroma(persist_directory="docs/chroma/", embedding_function=OpenAIEmbeddings())
 
 cv_info = PyPDFLoader("https://mauriciogtec.com/_static/cv.pdf").load()[0].page_content
-print("ok")
 
 # Is Mauricio a good fit for a research scientist job at Boston dynamics?
 
@@ -153,6 +119,10 @@ def generate_response(query_text):
 
     return qa_chain({"query": query_text_with_context})["result"]
 
+
+# Page title
+st.set_page_config(page_title="Mauricio Tec's Live CV")
+st.title("Mauricio Tec's Live CV")
 
 #  add photo in a circle, center it
 st.image("_static/profile-bw.png", width=200)

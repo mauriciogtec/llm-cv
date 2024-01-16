@@ -9,7 +9,7 @@ from omegaconf import DictConfig
 import logging
 
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 
 @hydra.main(config_path="conf", config_name="config", version_base=None)
@@ -25,7 +25,7 @@ def create_db(cfg: DictConfig):
     for v in cfg.web.values():
         docs.extend(WebBaseLoader(v).load())
 
-    persist_directory = "./docs/chroma"
+    # persist_directory = "./docs/chroma"
     # # delete the directory if it exists
     # if os.path.exists(persist_directory):
     #     shutil.rmtree(persist_directory)
@@ -43,14 +43,14 @@ def create_db(cfg: DictConfig):
     db = Chroma.from_documents(
         splits,
         embedding=embedding,
-        persist_directory=persist_directory,
+        # persist_directory=persist_directory,
     )
-    db.persist()
+    # db.persist()
     # try:
     # except Exception as e:
     #     logging.error(f"Error persisting db: {e}")
 
-    logging.info(f"Created db with {len(splits)} documents")
+    # logging.info(f"Created db with {len(splits)} documents")
 
     return db
 
