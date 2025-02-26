@@ -7,8 +7,8 @@ from langchain_community.vectorstores import Chroma
 from langchain_openai.chat_models import ChatOpenAI
 from langchain_openai.embeddings import OpenAIEmbeddings
 from omegaconf import OmegaConf
-
-
+               
+                                         
 # Setup Streamlit's page config
 st.set_page_config(page_title="Mauricio Tec's Live CV")
 st.title("Mauricio Tec's Live CV")
