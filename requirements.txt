@@ -3,7 +3,7 @@ langchain==0.3.19
 ipykernel
 pymupdf>=1.23.0
 arxiv==2.1.0
-tiktoken==0.5.2
+tiktoken==0.7
 chromadb==0.3.29
 pypdf==3.17.4
 lark==1.1.9
