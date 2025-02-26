@@ -2,10 +2,10 @@ import streamlit as st
 from langchain.chains.retrieval_qa.base import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.chat_models import ChatOpenAI
 from langchain_community.document_loaders import ArxivLoader, PyPDFLoader, WebBaseLoader
-from langchain_openai.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
+from langchain_openai.chat_models import ChatOpenAI
+from langchain_openai.embeddings import OpenAIEmbeddings
 from omegaconf import OmegaConf
 
 
