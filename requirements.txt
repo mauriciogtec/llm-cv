@@ -1,5 +1,6 @@
 langchain-openai
 langchain<3
+langchain-community
 ipykernel
 pymupdf>=1.23.0
 arxiv==2.1.0
