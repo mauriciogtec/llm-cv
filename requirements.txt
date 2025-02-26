@@ -1,15 +1,12 @@
-langchain==0.3.19
-langchain-community==0.3.18
-langchain-core==0.3.40
 langchain-openai==0.3.7
+langchain==0.3.19
 ipykernel
 pymupdf>=1.23.0
 arxiv==2.1.0
-tiktoken==0.9.0
-chromadb==0.6.3
+tiktoken==0.5.2
+chromadb==0.3.29
 pypdf==3.17.4
 lark==1.1.9
 streamlit==1.30.0
-hydra-core==1.3.2
-beautifulsoup4==4.12.2
-# pysqlite3-binary # for streamlist only
+watchdog==3.0.0
+hydra-core>=1.3.0
