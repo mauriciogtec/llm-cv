@@ -12,4 +12,4 @@ lark==1.1.9
 streamlit==1.30.0
 hydra-core==1.3.2
 beautifulsoup4==4.12.2
-pysqlite3-binary # for streamlist only
+# pysqlite3-binary # for streamlist only
